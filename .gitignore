@@ -1,0 +1,9 @@
+*.exe
+*.o
+*.depend
+*.layout
+obj/
+values.txt
+docs/
+lib/libSDL2.a
+lib/libSDL2_test.a
