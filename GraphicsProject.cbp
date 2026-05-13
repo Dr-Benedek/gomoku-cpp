@@ -99,6 +99,30 @@
 			<Option target="Debug" />
 			<Option target="Release" />
 		</Unit>
+	<Unit filename="label.cpp">
+		<Option target="Debug" />
+		<Option target="Release" />
+	</Unit>
+	<Unit filename="label.hpp">
+		<Option target="Debug" />
+		<Option target="Release" />
+	</Unit>
+	<Unit filename="gamemaster.cpp">
+		<Option target="Debug" />
+		<Option target="Release" />
+	</Unit>
+	<Unit filename="gamemaster.hpp">
+		<Option target="Debug" />
+		<Option target="Release" />
+	</Unit>
+	<Unit filename="boardwidget.cpp">
+		<Option target="Debug" />
+		<Option target="Release" />
+	</Unit>
+	<Unit filename="boardwidget.hpp">
+		<Option target="Debug" />
+		<Option target="Release" />
+	</Unit>
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>
