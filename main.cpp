@@ -14,27 +14,31 @@ int main()
     GameMaster gm;
     gm.newGame(19);
 
-    //                     x    y   sx   sy  min  max  default
-    NumberSetter sizeNS(  10,  10, 150,  40,  15,  30,  19);
-    Label        status( 300,  10, 390,  40, "1. jatekos lep");
-    BoardWidget  board(    0,  60, 700, 700, &gm);
+    //                      x    y   sx   sy
+    Label        meret(    10,  10,  55,  40, "Meret:");
+    //                      x    y   sx   sy  min  max  default
+    NumberSetter sizeNS(   65,  10,  95,  40,  15,  30,  19);
+    //                      x    y   sx   sy
+    Label        status(  281,  10, 409,  40, "1. játékos lép");
+    BoardWidget  board(     0,  60, 700, 700, &gm);
 
     board.setOnMoveCallback([&](MoveResult result, int player) {
         if (result == MoveResult::WIN) {
-            status.setText(to_string(player) + ". jatekos nyert!");
+            status.setText(to_string(player) + ". játékos nyert!");
         } else if (result == MoveResult::DRAW) {
-            status.setText("Dontetlen! Uj jatekot?");
+            status.setText("Döntetlen! Új játékot?");
         } else {
             int next = (player == 1) ? 2 : 1;
-            status.setText(to_string(next) + ". jatekos lep");
+            status.setText(to_string(next) + ". játékos lép");
         }
     });
 
-    Button newGameBtn(170, 10, 120, 40, "Uj jatek", [&]() {
+    Button newGameBtn(168, 10, 105, 40, "Új játék", [&]() {
         gm.newGame(sizeNS.getInt());
-        status.setText("1. jatekos lep");
+        status.setText("1. játékos lép");
     });
 
+    w.add(&meret);
     w.add(&sizeNS);
     w.add(&newGameBtn);
     w.add(&status);
