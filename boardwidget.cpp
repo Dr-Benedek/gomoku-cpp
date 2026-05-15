@@ -39,6 +39,26 @@ void BoardWidget::draw() {
         gout << move_to(_x,        _y + i*cs) << line(_size_x, 0);
     }
 
+    // Hoshi pontok (csillag-jelzok – 3 pozicio minden meretnel)
+    {
+        std::vector<int> pts = {3, size / 2, size - 4};
+        for (int ri : pts)
+            for (int ci : pts)
+                drawFilledCircle(_x + ci*cs + cs/2, _y + ri*cs + cs/2,
+                                 3, 60, 40, 10);
+    }
+
+    // Tablakeret (ket pixel vastagsag)
+    gout << color(50, 30, 5);
+    gout << move_to(_x,               _y)                << line(_size_x, 0);
+    gout << move_to(_x,               _y + _size_y - 1)  << line(_size_x, 0);
+    gout << move_to(_x,               _y)                << line(0, _size_y);
+    gout << move_to(_x + _size_x - 1, _y)                << line(0, _size_y);
+    gout << move_to(_x + 1,           _y + 1)            << line(_size_x - 2, 0);
+    gout << move_to(_x + 1,           _y + _size_y - 2)  << line(_size_x - 2, 0);
+    gout << move_to(_x + 1,           _y + 1)            << line(0, _size_y - 2);
+    gout << move_to(_x + _size_x - 2, _y + 1)            << line(0, _size_y - 2);
+
     // Nyero cellak elore lekerdezese
     auto winCells = _gm->getWinningCells();
 
