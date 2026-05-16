@@ -56,6 +56,78 @@ MoveResult GameMaster::tryMove(int col, int row) {
     return MoveResult::OK;
 }
 
+// Egymas melletti azonos szinu kovek szama az adott iranyban (mindket oldal)
+int GameMaster::countLine(int col, int row, int dx, int dy, int player) const {
+    int count = 0;
+    for (int i = 1; i <= 4; i++) {
+        int nc = col + dx*i, nr = row + dy*i;
+        if (nc < 0 || nc >= _boardSize || nr < 0 || nr >= _boardSize) break;
+        if (_board[nr][nc] != player) break;
+        count++;
+    }
+    for (int i = 1; i <= 4; i++) {
+        int nc = col - dx*i, nr = row - dy*i;
+        if (nc < 0 || nc >= _boardSize || nr < 0 || nr >= _boardSize) break;
+        if (_board[nr][nc] != player) break;
+        count++;
+    }
+    return count;
+}
+
+// Heurisztikus gepi lepesvalasztas (pontozas alapjan)
+std::pair<int,int> GameMaster::computerMove() {
+    int bestScore = -1;
+    int bestCol   = _boardSize / 2;
+    int bestRow   = _boardSize / 2;
+
+    int me  = _currentPlayer;
+    int opp = (me == 1) ? 2 : 1;
+
+    static const int dirs[4][2] = {{1,0},{0,1},{1,1},{1,-1}};
+
+    for (int r = 0; r < _boardSize; r++) {
+        for (int c = 0; c < _boardSize; c++) {
+            if (_board[r][c] != 0) continue;
+
+            int score = 0;
+
+            for (auto& d : dirs) {
+                int myLine  = countLine(c, r, d[0], d[1], me);
+                int oppLine = countLine(c, r, d[0], d[1], opp);
+
+                if (myLine  >= 4) score += 1000000; // nyeres
+                if (oppLine >= 4) score +=  100000;  // ellenfél nyeresének blokkja
+                if (myLine  == 3) score +=   10000;
+                if (oppLine == 3) score +=    5000;
+                if (myLine  == 2) score +=     200;
+                if (oppLine == 2) score +=     100;
+                if (myLine  == 1) score +=      20;
+            }
+
+            // Szomszedsagi bonus (2 cella korzetben)
+            for (int dr = -2; dr <= 2; dr++)
+                for (int dc = -2; dc <= 2; dc++) {
+                    if (dr == 0 && dc == 0) continue;
+                    int nr = r + dr, nc = c + dc;
+                    if (nr >= 0 && nr < _boardSize && nc >= 0 && nc < _boardSize
+                        && _board[nr][nc] != 0)
+                        score += 5;
+                }
+
+            // Kozepponti preferencia
+            int dist = std::abs(c - _boardSize/2) + std::abs(r - _boardSize/2);
+            score += std::max(0, 10 - dist);
+
+            if (score > bestScore) {
+                bestScore = score;
+                bestCol   = c;
+                bestRow   = r;
+            }
+        }
+    }
+    return {bestCol, bestRow};
+}
+
 bool GameMaster::checkWin(int col, int row) {
     int player = _board[row][col];
     // 4 irany: jobbra, le, jobb-le atlo, jobb-fel atlo

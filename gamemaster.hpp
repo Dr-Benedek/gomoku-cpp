@@ -18,9 +18,8 @@ public:
     bool getIsDraw() const;
     std::vector<std::pair<int,int>> getWinningCells() const;
 
-    // TODO: gepi jatekos - computerMove() implementalasa
-    // TODO: minimax vagy heurisztikus lepesvalasztas (melyseg: 3-4 szint)
-    // TODO: UI toggle: ember vs gep mod (pl. Selector a topbaron)
+    // Gepi lepesvalasztas (heurisztikus pontozas)
+    std::pair<int,int> computerMove();
 
 private:
     std::vector<std::vector<int>> _board;
@@ -32,6 +31,7 @@ private:
     std::vector<std::pair<int,int>> _winningCells;
 
     bool checkWin(int col, int row);
+    int  countLine(int col, int row, int dx, int dy, int player) const;
 };
 
 #endif
