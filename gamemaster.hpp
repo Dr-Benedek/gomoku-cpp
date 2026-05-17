@@ -18,8 +18,8 @@ public:
     bool getIsDraw() const;
     std::vector<std::pair<int,int>> getWinningCells() const;
 
-    // Gepi lepesvalasztas (heurisztikus pontozas)
-    std::pair<int,int> computerMove();
+    // Gepi lepesvalasztas (heurisztikus pontozas, difficulty 1-3)
+    std::pair<int,int> computerMove(int difficulty = 2);
 
 private:
     std::vector<std::vector<int>> _board;

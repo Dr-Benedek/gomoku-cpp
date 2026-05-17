@@ -16,16 +16,15 @@ int main()
     gm.newGame(19);
 
     // Topbar elrendezese (y=10, h=40):
-    // [Meret:10][NS:62][ModeSel:252][Status:362..690]
-    // [UjJatek:152] kozvetlenul a jatekmezore szorva
+    // [Meret:10,52][NS:62,90][UjJatek:152,100][ModeSel:252,85][DiffNS:337,75][Status:412,278]
     Label        meret(    10,  10,  52,  40, "Méret:");
     NumberSetter sizeNS(   62,  10,  90,  40,  15,  30,  19);
-    Selector     modeSel(  252,  10, 110,  40, {"2 jatekos", "vs. Gep"}, 2);
-    Label        status(   362,  10, 328,  40, "1. játékos lép");
+    Selector     modeSel(  252,  10,  85,  40, {"2 jatekos", "vs. Gep"}, 2);
+    NumberSetter diffNS(   337,  10,  75,  40,   1,   3,   2);
+    Label        status(   412,  10, 278,  40, "1. játékos lép");
     BoardWidget  board(      0,  60, 700, 700, &gm);
 
     board.setOnMoveCallback([&](MoveResult result, int player) {
-        // Status frissitese az emberi lepes utan
         if (result == MoveResult::WIN) {
             status.setText(to_string(player) + ". játékos nyert!");
         } else if (result == MoveResult::DRAW) {
@@ -42,7 +41,7 @@ int main()
         if (result == MoveResult::OK && player == 1
             && modeSel.getValue() == "vs. Gep"
             && !gm.isGameOver()) {
-            auto [aiCol, aiRow] = gm.computerMove();
+            auto [aiCol, aiRow] = gm.computerMove(diffNS.getInt());
             MoveResult aiResult = gm.tryMove(aiCol, aiRow);
             if (aiResult == MoveResult::WIN)
                 status.setText("Gép nyert!");
@@ -62,6 +61,7 @@ int main()
     w.add(&sizeNS);
     w.add(&newGameBtn);
     w.add(&modeSel);
+    w.add(&diffNS);
     w.add(&status);
     w.add(&board);
 

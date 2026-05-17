@@ -1,5 +1,6 @@
 #include "gamemaster.hpp"
 #include <cmath>
+#include <random>
 
 GameMaster::GameMaster()
     : _currentPlayer(1), _boardSize(19), _gameOver(false),
@@ -74,16 +75,22 @@ int GameMaster::countLine(int col, int row, int dx, int dy, int player) const {
     return count;
 }
 
-// Heurisztikus gepi lepesvalasztas (pontozas alapjan)
-std::pair<int,int> GameMaster::computerMove() {
-    int bestScore = -1;
-    int bestCol   = _boardSize / 2;
-    int bestRow   = _boardSize / 2;
+// Heurisztikus gepi lepesvalasztas (pontozas alapjan, difficulty 1-3)
+std::pair<int,int> GameMaster::computerMove(int difficulty) {
+    static std::mt19937 rng(std::random_device{}());
 
     int me  = _currentPlayer;
     int opp = (me == 1) ? 2 : 1;
 
     static const int dirs[4][2] = {{1,0},{0,1},{1,1},{1,-1}};
+
+    // Jitter tartomany nehezsegtol fuggoen
+    int jitter = 0;
+    if      (difficulty == 1) jitter = 500;
+    else if (difficulty == 2) jitter = 30;
+
+    std::vector<std::pair<int,int>> candidates;
+    int bestScore = -1;
 
     for (int r = 0; r < _boardSize; r++) {
         for (int c = 0; c < _boardSize; c++) {
@@ -95,8 +102,8 @@ std::pair<int,int> GameMaster::computerMove() {
                 int myLine  = countLine(c, r, d[0], d[1], me);
                 int oppLine = countLine(c, r, d[0], d[1], opp);
 
-                if (myLine  >= 4) score += 1000000; // nyeres
-                if (oppLine >= 4) score +=  100000;  // ellenfél nyeresének blokkja
+                if (myLine  >= 4) score += 1000000;
+                if (oppLine >= 4) score +=  100000;
                 if (myLine  == 3) score +=   10000;
                 if (oppLine == 3) score +=    5000;
                 if (myLine  == 2) score +=     200;
@@ -118,14 +125,25 @@ std::pair<int,int> GameMaster::computerMove() {
             int dist = std::abs(c - _boardSize/2) + std::abs(r - _boardSize/2);
             score += std::max(0, 10 - dist);
 
+            // Veletlenszeru zaj (difficulty 1: nagy, 2: kis, 3: nincs)
+            if (jitter > 0)
+                score += std::uniform_int_distribution<int>(-jitter, jitter)(rng);
+
             if (score > bestScore) {
                 bestScore = score;
-                bestCol   = c;
-                bestRow   = r;
+                candidates.clear();
+                candidates.push_back({c, r});
+            } else if (difficulty == 3 && score == bestScore) {
+                candidates.push_back({c, r});
             }
         }
     }
-    return {bestCol, bestRow};
+
+    // Nehez mod: az osszes legjobb pontszamu cella kozul veletlenszeruen valaszt
+    if (difficulty == 3 && candidates.size() > 1) {
+        return candidates[std::uniform_int_distribution<int>(0, (int)candidates.size()-1)(rng)];
+    }
+    return candidates.empty() ? std::make_pair(_boardSize/2, _boardSize/2) : candidates[0];
 }
 
 bool GameMaster::checkWin(int col, int row) {

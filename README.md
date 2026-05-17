@@ -1,8 +1,8 @@
-# Amőba / Five-in-a-Row
+# Amőba / Five-in-a-Row (Gomoku)
 
-**EN:** A two-player Gomoku (5-in-a-row) game. Select board size (15–30), press **Új játék** to start, then click on the board to place stones. First player to align 5 stones horizontally, vertically, or diagonally wins.
+**EN:** A Gomoku (5-in-a-row) game for two players or against the computer. Place stones on the board; the first to align 5 stones horizontally, vertically, or diagonally wins.
 
-**HU:** Kétszemélyes amőba. Válaszd ki a pályaméretét (15–30), nyomj **Új játék** gombot, majd kattints a táblára a kövek lerakásához. Az nyer, aki először rak ki 5 egyforma követ egy sorba (vízszintesen, függőlegesen vagy átlósan).
+**HU:** Amőba játék (5-ös gomoku) két játékosnak vagy gép ellen. Rakj köveket a táblára; aki először rak ki 5 egyforma követ egymás mellé (vízszintesen, függőlegesen vagy átlósan), az nyer.
 
 ## Build / Fordítás
 
@@ -14,9 +14,14 @@ Requires MinGW/GCC with SDL2 and SDL2_ttf (included in `lib/` and `include/`).
 | Action / Akció | Input |
 |---|---|
 | Place stone / Kő lerakása | Left click / Bal kattintás |
-| New game / Új játék | Click button / Gomb kattintás |
-| Change board size / Méret változtatása | NumberSetter → Új játék |
+| New game / Új játék | **Új játék** button |
+| Change board size / Méretváltoztatás | NumberSetter (15–30) → **Új játék** |
+| Game mode / Játékmód | Selector: **2 jatekos** or **vs. Gep** |
+| AI difficulty / Nehézség | NumberSetter (1–3): 1 = könnyű, 2 = közepes, 3 = nehéz |
 
 ## Changelog / Változások
 
 - **v1.0** — Alap kétszemélyes játék / Base two-player game
+- **v1.1** — Magyar felirat, pályakeret, hoshi pontok / Hungarian UI, board border, star points
+- **v1.2** — Gépi játékos (heurisztikus AI) + módválasztó / AI opponent + mode selector
+- **v1.3** — Nehézségállító (1–3), véletlenszerű AI / Difficulty setting, randomized AI
