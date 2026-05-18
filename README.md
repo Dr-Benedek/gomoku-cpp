@@ -1,23 +1,43 @@
 # Amőba / Five-in-a-Row (Gomoku)
 
-**EN:** A Gomoku (5-in-a-row) game for two players or against the computer. Place stones on the board; the first to align 5 stones horizontally, vertically, or diagonally wins.
+**EN:** A Gomoku (5-in-a-row) game. Play against a friend or the computer. Configure all settings in the main menu, then click **Játék!** to start.
 
-**HU:** Amőba játék (5-ös gomoku) két játékosnak vagy gép ellen. Rakj köveket a táblára; aki először rak ki 5 egyforma követ egymás mellé (vízszintesen, függőlegesen vagy átlósan), az nyer.
+**HU:** Amőba játék (gomoku). Játssz barát ellen vagy gép ellen. Állítsd be a beállításokat a főmenüben, majd kattints a **Játék!** gombra.
 
 ## Build / Fordítás
 
 Open `GraphicsProject.cbp` in Code::Blocks and press **Build → Build** (F9).  
 Requires MinGW/GCC with SDL2 and SDL2_ttf (included in `lib/` and `include/`).
 
-## Controls / Vezérlés
+## Main Menu / Főmenü
 
-| Action / Akció | Input |
+Configure before starting — all settings live here.
+
+| Setting / Beállítás | Options / Lehetőségek |
+|---|---|
+| Mód | `2 jatekos` (local 2-player) / `vs. Gep` (AI) |
+| Pályaméret | 15–30 via `[-]` `[+]` |
+| Nehézség | 1–3, only active in `vs. Gep` mode |
+
+**Súgó / Info** — game rules and controls.
+
+## In-Game Controls / Játék közbeni vezérlés
+
+| Action / Akció | Control |
 |---|---|
 | Place stone / Kő lerakása | Left click / Bal kattintás |
-| New game / Új játék | **Új játék** button |
-| Change board size / Méretváltoztatás | NumberSetter (15–30) → **Új játék** |
-| Game mode / Játékmód | Selector: **2 jatekos** or **vs. Gep** |
-| AI difficulty / Nehézség | NumberSetter (1–3): 1 = könnyű, 2 = közepes, 3 = nehéz |
+| Restart with same settings / Újrakezd | **Új játék** button |
+| Back to menu / Főmenübe | **← Menü** button |
+
+To change board size, mode or difficulty, go back to the main menu via **← Menü**.
+
+## Difficulty / Nehézség (vs. Gép)
+
+| Level | Behaviour |
+|---|---|
+| 1 – Könnyű | Large random noise — plays weaker |
+| 2 – Közepes | Small noise — balanced (default) |
+| 3 – Nehéz | No noise, picks among best moves randomly |
 
 ## Changelog / Változások
 
@@ -25,3 +45,5 @@ Requires MinGW/GCC with SDL2 and SDL2_ttf (included in `lib/` and `include/`).
 - **v1.1** — Magyar felirat, pályakeret, hoshi pontok / Hungarian UI, board border, star points
 - **v1.2** — Gépi játékos (heurisztikus AI) + módválasztó / AI opponent + mode selector
 - **v1.3** — Nehézségállító (1–3), véletlenszerű AI / Difficulty setting, randomized AI
+- **v1.4** — Főmenü beállításokkal, ← Menü gomb / Main menu with settings, back-to-menu button
+- **v1.5** — Egyszerűsített topbar, beállítások csak a főmenüben / Simplified topbar, settings in menu only

@@ -5,9 +5,19 @@ using namespace genv;
 using namespace std;
 
 Window::Window(int width, int height)
-    : _width(width), _height(height), _focus(-1)
+    : _width(width), _height(height), _focus(-1), _shouldClose(false)
 {
     gout.open(width, height);
+}
+
+void Window::clear() {
+    _widgets.clear();
+    _focus = -1;
+    _shouldClose = false;
+}
+
+void Window::requestClose() {
+    _shouldClose = true;
 }
 
 void Window::add(Widget* w)
@@ -24,8 +34,9 @@ void Window::run()
     if (_focus != -1) _widgets[_focus]->draw();
     gout << refresh;
 
+    _shouldClose = false;
     event ev;
-    while (gin >> ev) {
+    while (gin >> ev && !_shouldClose) {
         if (ev.type == ev_mouse) {
             if (ev.button == btn_left) {
                 int new_focus = -1;

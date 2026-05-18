@@ -21,6 +21,7 @@ public:
     virtual void draw();
     virtual void handle(genv::event ev);
     virtual std::string getValue() const;
+    void setSelected(int idx);
     void addOption(const std::string& opt);
     void removeSelected();
 };

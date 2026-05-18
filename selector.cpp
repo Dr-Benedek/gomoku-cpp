@@ -171,6 +171,11 @@ string Selector::getValue() const
     return _options.empty() ? "" : _options[_selected];
 }
 
+void Selector::setSelected(int idx) {
+    if (idx >= 0 && idx < (int)_options.size())
+        _selected = idx;
+}
+
 void Selector::addOption(const string& opt)
 {
     _options.push_back(opt);
