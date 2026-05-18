@@ -8,6 +8,6 @@ struct GameSettings {
     int  difficulty;// 1–3
 };
 
-GameSettings runMenu();
+GameSettings runMenu(GameSettings prev = {true, 19, 0, 2});
 
 #endif

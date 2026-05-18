@@ -13,7 +13,7 @@ int main()
 
     // Főmenü → játék → főmenü loop.
     // Beállítások (méret, mód, nehézség) kizárólag a főmenüből jönnek.
-    for (GameSettings cfg = runMenu(); cfg.play; cfg = runMenu()) {
+    for (GameSettings cfg = runMenu(); cfg.play; cfg = runMenu(cfg)) {
         GameMaster gm;
         gm.newGame(cfg.boardSize);
 

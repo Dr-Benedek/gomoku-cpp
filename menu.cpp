@@ -113,10 +113,10 @@ static void drawBg() {
     fillCircle(630, 555, 15, 212, 207, 192);
 }
 
-GameSettings runMenu() {
+GameSettings runMenu(GameSettings prev) {
     gout.load_font(MF, 20);
 
-    GameSettings cfg = {true, 19, 0, 2};
+    GameSettings cfg = prev;
 
     // Főmenü gombok
     MBtn playBtn = {W/2-120, 468, 240, 55, "Játék!",      false};
